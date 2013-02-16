@@ -9,6 +9,8 @@
 #   wgLogo
 # [*mediawiki_server*]
 #   wgServer
+# [*mediawiki_scriptpath*]
+#   wgScriptPath
 # [*mediawiki_db_server*]
 #  wgDBserver
 # [*mediawiki_db_name*]
@@ -33,6 +35,10 @@
 #  wgLDAPProxyAgent
 # [*mediawiki_ldap_proxy_agent_password*]
 #  wgLDAPProxyAgentPassword
+# [*mediawiki_parserfunctions*]
+#  enable parser functions
+# [*mediawiki_semantic*]
+#  enable semantic mediawiki extension and friends
 #
 class mediawiki inherits mediawiki::params {
   include mediawiki::gentoo

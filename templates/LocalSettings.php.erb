@@ -24,7 +24,7 @@ $wgSitename      = "<%= mediawiki_sitename %>";
 ## defaults for all runtime URL paths are based off of this.
 ## For more information on customizing the URLs please see:
 ## http://www.mediawiki.org/wiki/Manual:Short_URL
-$wgScriptPath       = "";
+$wgScriptPath       = "<%= mediawiki_scriptpath %>";
 $wgScriptExtension  = ".php";
 
 ## The protocol and server name to use in fully-qualified URLs
@@ -69,8 +69,12 @@ $wgDBTableOptions   = "ENGINE=InnoDB, DEFAULT CHARSET=utf8";
 # Experimental charset support for MySQL 5.0.
 $wgDBmysql5 = false;
 
+# rarely execute jobs
+$wgJobRunRate = 0.1;
+
 ## Shared memory settings
 $wgMainCacheType    = <%= mediawiki_main_cache_type %>;
+$wgMemCachedPersistent = true;
 <% if mediawiki_main_cache_type == 'CACHE_MEMCACHED' %>
 $wgMemCachedServers = array(
     '<%= mediawiki_cached_server %>'
@@ -103,7 +107,10 @@ $wgShellLocale = "en_US.utf8";
 ## Set $wgCacheDirectory to a writable directory on the web server
 ## to make your wiki go slightly faster. The directory should not
 ## be publically accessible from the web.
-#$wgCacheDirectory = "$IP/cache";
+$wgCacheDirectory = "$IP/cache";
+$wgEnableSidebarCache = true;
+$wgUseLocalMessageCache = true;
+$wgUseGzip = true;
 
 # Site language code, should be one of the list in ./languages/Names.php
 $wgLanguageCode = "de-ch";
@@ -210,7 +217,7 @@ $wgDefaultUserOptions['usebetatoolbar-cgd'] = 1;
 $wgDefaultUserOptions['wikieditor-preview'] = 1;
  
 # Displays the Publish and Cancel buttons on the top right side
-$wgDefaultUserOptions['wikieditor-publish'] = 1;
+$wgDefaultUserOptions['wikieditor-publish'] = 0;
  
 # Displays a navigation column (summary) on the right side
 $wgDefaultUserOptions['usenavigabletoc'] = 1;
@@ -225,4 +232,22 @@ $wgUserProfileDisplay['board'] = true;
 $wgUserProfileDisplay['stats'] = true;
 
 require_once("$IP/extensions/SocialProfile/UserWelcome/UserWelcome.php");
+<% end %>
+
+<% if mediawiki_parserfunctions %>
+require_once( "$IP/extensions/ParserFunctions/ParserFunctions.php" );
+<% end %>
+
+<% if mediawiki_semantic %>
+require_once( "$IP/extensions/SemanticBundle/SemanticBundleSettings.php" );
+require_once( "$IP/extensions/SemanticBundle/SemanticBundle.php" );
+$htEditTabLink = false;
+<% if mediawiki_socialprofile %>
+require_once("$IP/extensions/SemanticSocialProfile/SemanticSocialProfile.php");
+<% end %>
+$smwgPageSpecialProperties[] = '_NEWP';
+$smwgPageSpecialProperties[] = '_LEDT';
+$smwgPageSpecialProperties[] = '_MDAT';
+$sfgRenameEditTabs = true;
+$sfg24HourTime = true;
 <% end %>
