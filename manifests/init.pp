@@ -66,24 +66,15 @@ class mediawiki inherits mediawiki::params {
   }
 
   if $::mediawiki_remote_auth == true {
-    Layman::Overlay['rabe-portage-overlay'] ~> Webapp_config['mediawiki'] ~> package { 'mediawiki-ext-automatic-remoteuser':
-      ensure => installed,
-      before => Anchor['mediawiki::end']
-    }
+    Layman::Overlay['rabe-portage-overlay'] ~> Webapp_config['mediawiki'] ~> Anchor['mediawiki::end']
   }
 
   if $::mediawiki_ldap_auth == true {
-    Layman::Overlay['rabe-portage-overlay'] ~> Webapp_config['mediawiki'] ~> package { 'mediawiki-ext-ldap-auth':
-      ensure => installed,
-      before => Anchor['mediawiki::end']
-    }
+    Layman::Overlay['rabe-portage-overlay'] ~> Webapp_config['mediawiki'] ~> Anchor['mediawiki::end']
   }
 
   if $mediawiki_socialprofile == true {
-    Layman::Overlay['rabe-portage-overlay'] ~> Webapp_config['mediawiki'] ~> package { 'mediawiki-ext-socialprofile':
-      ensure => installed,
-      before => Anchor['mediawiki::end']
-    }
+    Layman::Overlay['rabe-portage-overlay'] ~> Webapp_config['mediawiki'] ~> Anchor['mediawiki::end']
   }
 
   if $mediawiki_main_cache_type == 'CACHE_MEMCACHED' {
