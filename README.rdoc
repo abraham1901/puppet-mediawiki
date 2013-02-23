@@ -2,11 +2,15 @@
 
 Install mediawiki with bells and whistles
 
-This module wal built to install mediawiki with bells and whistles. We like 
-our wiki shiny and  outfitted with niceties such as social profile. This
-module takes care of that and does so well on gentoo.
+This module was built to install mediawiki with bells and whistles. We like 
+our wiki shiny and outfitted with niceties. This module takes care of that 
+and does so well on gentoo.
 
-To run this you will need some packages from the rabe-portage-overlay.
+To run this you might need some packages from the rabe-portage-overlay.
+
+Please note that this module is mainly meant for internal use at rabe.ch. 
+For it to appeal to a larger audience i still need to do heaps of 
+refactoring.
 
 === Actions
 
@@ -17,3 +21,9 @@ To run this you will need some packages from the rabe-portage-overlay.
 === Example Usage
 
   include ::mediawiki
+  
+=== Contributing
+
+Yes please! Have a look at the github issues if you need something to work on.
+
+Please open an issue or a pull request if you start working on something.
