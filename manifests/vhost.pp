@@ -15,6 +15,7 @@ class mediawiki::vhost {
   } -> apache::vhost { 'mediawiki_vhost':
     port       => 80,
     docroot    => "/var/www/${fqdn}/htdocs",
+    template   => "apache/vhost-default.conf.erb",
     servername => $fqdn;
   } -> Webapp_config['mediawiki']
 
