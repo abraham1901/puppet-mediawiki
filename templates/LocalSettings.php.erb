@@ -41,6 +41,18 @@ $wgLogo             = <%= mediawiki_logo %>;
 $wgLogo             = "$wgStylePath/common/images/wiki.png";
 <% end %>
 
+<% if scope.lookupvar('::mediawiki_timezone') %>
+date_default_timezone_set('<%= scope.lookupvar('::mediawiki_timezone') %>');
+$wgLocaltimezone = "<%= scope.lookupvar('::mediawiki_timezone') %>";
+<% end %>
+
+<% if scope.lookupvar('::mediawiki_use_ajax') %>
+$wgUseAjax = true;
+<% end %>
+<% if scope.lookupvar('::mediawiki_allow_user_js') %>
+$wgAllowUserJs = true;
+<% end %>
+
 ## UPO means: this is also a user preference option
 
 $wgEnableEmail      = <%= mediawiki_enable_email %>;
@@ -167,6 +179,9 @@ $wgGroupPermissions['*']['edit']            = false;
 <% mediawiki_file_extensions.each do |extension| %>
 $wgFileExtensions[] = '<%= extension %>';
 <% end %>
+<% scope.lookupvar('::mediawiki_url_protocols').each do |protocol| %>
+$wgUrlProtocols[] = '<%= protocol %>';
+<% end %>
 
 <% if scope.lookupvar('::mediawiki_remote_auth') %>
 require_once('extensions/Auth_remoteuser.php');
@@ -238,16 +253,85 @@ require_once("$IP/extensions/SocialProfile/UserWelcome/UserWelcome.php");
 require_once( "$IP/extensions/ParserFunctions/ParserFunctions.php" );
 <% end %>
 
-<% if scope.lookupvar('::mediawiki_semantic') %>
-require_once( "$IP/extensions/SemanticBundle/SemanticBundleSettings.php" );
-require_once( "$IP/extensions/SemanticBundle/SemanticBundle.php" );
+<% if scope.lookupvar('::mediawiki_categorytree') %>
+require_once("$IP/extensions/CategoryTree/CategoryTree.php");
+$wgCategoryTreeCategoryPageMode = <%= scope.lookupvar('::mediawiki_categorytree_page_mode') %>;
+$wgCategoryTreeSidebarRoot = '<%= scope.lookupvar('mediawiki_categorytree_sidebar_root') %>';
+<% if scope.lookupvar('::mediawiki_categorytree_sidebar_mode') %>
+$wgCategoryTreeSidebarOptions['mode'] = <%= scope.lookupvar('::mediawiki_categorytree_sidebar_mode') %>
+<% end %>
+$wgCategoryTreeForceHeaders = <%= scope.lookupvar('::mediawiki_categorytree_sidebar_force_headers') %>;
+<% end %>
+
+<% if scope.lookupvar('::mediawiki_fileprotocollinks') %>
+require_once("$IP/extensions/FileProtocolLinks/FileProtocolLinks.php");
+<% end %>
+
+<% if scope.lookupvar('::mediawiki_deletebatch') %>
+require_once("$IP/extensions/DeleteBatch/DeleteBatch.php");
+$wgGroupPermissions['<%= scope.lookupvar('::mediawiki_deletebatch_perms') %>']['deletebatch'] = true;
+<% end %>
+
+<% if scope.lookupvar('::mediawiki_approvedrevs') %>
+include_once( "$IP/extensions/ApprovedRevs/ApprovedRevs.php" );
+$wgGroupPermissions['*']['viewlinktolatest'] = true;
+$wgGroupPermissions['*']['approverevisions'] = false;
+$wgGroupPermissions['bureaucrat']['approverevisions'] = true;
+<% end %>
+
+<% if scope.lookupvar('::mediawiki_headertabs') %>
+include_once( "$IP/extensions/HeaderTabs/HeaderTabs.php" );
 $htEditTabLink = false;
+<% end %>
+
+<% if scope.lookupvar('::mediawiki_semantic') %>
+require_once( "$IP/extensions/SemanticBundle/SemanticBundle.php" );
+
+include_once( "$IP/extensions/Validator/Validator.php" );
+include_once( "$IP/extensions/SemanticMediaWiki/SemanticMediaWiki.php" );
+enableSemantics( parse_url( $wgServer, PHP_URL_HOST ) );
+
+# see SemanticBundleSettings.inc.php for docs and inspiration
+include_once( "$IP/extensions/SemanticResultFormats/SemanticResultFormats.php" );
+include_once( "$IP/extensions/SemanticForms/SemanticForms.php" );
+include_once( "$IP/extensions/SemanticFormsInputs/SemanticFormsInputs.php" );
+include_once( "$IP/extensions/SemanticCompoundQueries/SemanticCompoundQueries.php" );
+include_once( "$IP/extensions/SemanticDrilldown/SemanticDrilldown.php" );
+include_once( "$IP/extensions/Maps/Maps.php" );
+include_once( "$IP/extensions/SemanticMaps/SemanticMaps.php" );
+include_once( "$IP/extensions/SemanticInternalObjects/SemanticInternalObjects.php" );
+include_once( "$IP/extensions/SemanticImageInput/SemanticImageInput.php" );
+include_once( "$IP/extensions/Arrays/Arrays.php" );
+include_once( "$IP/extensions/DataTransfer/DataTransfer.php" );
+require_once( "$IP/extensions/ReplaceText/ReplaceText.php" );
 <% if scope.lookupvar('::mediawiki_socialprofile') %>
 require_once("$IP/extensions/SemanticSocialProfile/SemanticSocialProfile.php");
 <% end %>
+
 $smwgPageSpecialProperties[] = '_NEWP';
 $smwgPageSpecialProperties[] = '_LEDT';
 $smwgPageSpecialProperties[] = '_MDAT';
 $sfgRenameEditTabs = true;
 $sfg24HourTime = true;
+<% end %>
+
+<% if scope.lookupvar('::mediawiki_externaldata') %>
+include_once( "$IP/extensions/ExternalData/ExternalData.php" );
+<% scope.lookupvar('::mediawiki_externaldata_ldap_servers').each do |name,ldap| %>
+$edgLDAPServer['<%= name %>'] = "<%= ldap.host %>";
+$edgLDAPBaseDN['<%= name %>'] = "<%= ldap.basedn %>";
+$edgLDAPUser['<%= name %>'] = "<%= ldap.username %>";
+$edgLDAPPass['<%= name %>'] = "<%= ldap.password %>";
+<% end %>
+
+$wgShowSQLErrors= <%= scope.lookupvar('::mediawiki_externaldata_sql_showerrors') %>;
+# fast kein cache zum developen
+$edgCacheExpireTime = <%= scope.lookupvar('::mediawiki_externaldata_cache_expiry') %>;
+<% scope.lookupvar('::mediawiki_externaldata_sql_servers').each do |name,sql| %>
+$edgDBServer['<%= name %>'] = "<%= sql.host %>";
+$edgDBServerType['<%= name %>'] = "<%= sql.type %>";
+$edgDBName['<%= name %>'] = "<%= sql.schema %>";
+$edgDBUser['<%= name %>'] = "<%= sql.username %>";
+$edgDBPass['<%= name %>'] = "<%= sql.password %>";
+<% end %>
 <% end %>
