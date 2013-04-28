@@ -35,7 +35,7 @@ $wgStylePath        = "$wgScriptPath/skins";
 
 ## The relative URL path to the logo.  Make sure you change this from the default,
 ## or else you'll overwrite your logo when you upgrade!
-<% if mediawiki_logo %>
+<% if scope.lookupvar('::mediawiki_logo') %>
 $wgLogo             = <%= mediawiki_logo %>;
 <% else %>
 $wgLogo             = "$wgStylePath/common/images/wiki.png";
@@ -75,7 +75,7 @@ $wgJobRunRate = 0.1;
 ## Shared memory settings
 $wgMainCacheType    = <%= mediawiki_main_cache_type %>;
 $wgMemCachedPersistent = true;
-<% if mediawiki_main_cache_type == 'CACHE_MEMCACHED' %>
+<% if scope.lookupvar('::mediawiki_main_cache_type') == 'CACHE_MEMCACHED' %>
 $wgMemCachedServers = array(
     '<%= mediawiki_cached_server %>'
 );
@@ -155,10 +155,10 @@ $wgEnableScaryTranscluding = <%= mediawiki_enable_scary_transcluding %>;
 $wgRawHtml = <%= mediawiki_raw_html %>;
 $wgAllowCopyUploads = <%= mediawiki_allow_copy_uploads %>;
 
-<% if mediawiki_disable_unauthed_edits %>
+<% if scope.lookupvar('::mediawiki_disable_unauthed_edits') %>
 $wgGroupPermissions['*']['edit']            = false;
 <% end %>
-<% if mediawiki_disable_anon %>
+<% if scope.lookupvar('::mediawiki_disable_anon') %>
 $wgGroupPermissions['*']['createaccount']   = false;
 $wgGroupPermissions['*']['read']            = false;
 $wgGroupPermissions['*']['edit']            = false;
@@ -168,14 +168,14 @@ $wgGroupPermissions['*']['edit']            = false;
 $wgFileExtensions[] = '<%= extension %>';
 <% end %>
 
-<% if mediawiki_remote_auth %>
+<% if scope.lookupvar('::mediawiki_remote_auth') %>
 require_once('extensions/Auth_remoteuser.php');
 $wgAuth = new Auth_remoteuser();
 <% end %>
 
-<% if mediawiki_ldap_auth %>
+<% if scope.lookupvar('::mediawiki_ldap_auth') %>
 require_once( "$IP/extensions/LdapAuthentication/LdapAuthentication.php" );
-<% if mediawiki_ldap_autoauth %>
+<% if scope.lookupvar('::mediawiki_ldap_autoauth') %>
 require_once( "$IP/extensions/LdapAuthentication/LdapAutoAuthentication.php" );
 <% end %>
 
@@ -206,7 +206,7 @@ AutoAuthSetup();
 $wgAuth = new LdapAuthenticationPlugin();
 <% end %>
 
-<% if mediawiki_wikieditor %>
+<% if scope.lookupvar('::mediawiki_wikieditor') %>
 require_once("$IP/extensions/WikiEditor/WikiEditor.php");
 
 # Enables use of WikiEditor by default but still allow users to disable it in preferences
@@ -223,7 +223,7 @@ $wgDefaultUserOptions['wikieditor-publish'] = 0;
 $wgDefaultUserOptions['usenavigabletoc'] = 1;
 <% end %>
 
-<% if mediawiki_socialprofile %>
+<% if scope.lookupvar('::mediawiki_socialprofile') %>
 require_once("$IP/extensions/SocialProfile/SocialProfile.php");
 $wgUserBoard = true;
 $wgUserProfileDisplay['friends'] = true;
@@ -234,15 +234,15 @@ $wgUserProfileDisplay['stats'] = true;
 require_once("$IP/extensions/SocialProfile/UserWelcome/UserWelcome.php");
 <% end %>
 
-<% if mediawiki_parserfunctions %>
+<% if scope.lookupvar('::mediawiki_parserfunctions') %>
 require_once( "$IP/extensions/ParserFunctions/ParserFunctions.php" );
 <% end %>
 
-<% if mediawiki_semantic %>
+<% if scope.lookupvar('::mediawiki_semantic') %>
 require_once( "$IP/extensions/SemanticBundle/SemanticBundleSettings.php" );
 require_once( "$IP/extensions/SemanticBundle/SemanticBundle.php" );
 $htEditTabLink = false;
-<% if mediawiki_socialprofile %>
+<% if scope.lookupvar('::mediawiki_socialprofile') %>
 require_once("$IP/extensions/SemanticSocialProfile/SemanticSocialProfile.php");
 <% end %>
 $smwgPageSpecialProperties[] = '_NEWP';
