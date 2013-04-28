@@ -3,7 +3,6 @@
 # heaps of config for mediawiki
 #
 class mediawiki::params {
-  $mediawiki_version                   = '1.20.2'
   $mediawiki_raw_html                  = true
   $mediawiki_allow_copy_uploads        = true
   $mediawiki_disable_unauthed_edits    = true
