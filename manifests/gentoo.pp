@@ -61,7 +61,7 @@ class mediawiki::gentoo {
   file_line { 'enable-php-/etc/conf.d/apache2':
     ensure  => present,
     path    => '/etc/conf.d/apache2',
-    line    => 'APACHE2_OPTS="-D INFO -D SSL -D LANGUAGE -D LDAP -D PHP5"',
+    line    => 'APACHE2_OPTS="-D INFO -D LANGUAGE -D LDAP -D PHP5"',
     require => Class['apache']
   }
 
