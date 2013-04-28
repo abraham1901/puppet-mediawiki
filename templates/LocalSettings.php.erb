@@ -15,6 +15,10 @@ if ( !defined( 'MEDIAWIKI' ) ) {
 	exit;
 }
 
+<%if scope.lookupvar('::mediawiki_hide_php_errors') %>
+ini_set('display_errors', 0);
+<% end %>
+
 ## Uncomment this to disable output compression
 # $wgDisableOutputCompression = true;
 
