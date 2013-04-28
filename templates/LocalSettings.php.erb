@@ -318,20 +318,20 @@ $sfg24HourTime = true;
 <% if scope.lookupvar('::mediawiki_externaldata') %>
 include_once( "$IP/extensions/ExternalData/ExternalData.php" );
 <% scope.lookupvar('::mediawiki_externaldata_ldap_servers').each do |name,ldap| %>
-$edgLDAPServer['<%= name %>'] = "<%= ldap.host %>";
-$edgLDAPBaseDN['<%= name %>'] = "<%= ldap.basedn %>";
-$edgLDAPUser['<%= name %>'] = "<%= ldap.username %>";
-$edgLDAPPass['<%= name %>'] = "<%= ldap.password %>";
+$edgLDAPServer['<%= name %>'] = "<%= ldap['host'] %>";
+$edgLDAPBaseDN['<%= name %>'] = "<%= ldap['basedn'] %>";
+$edgLDAPUser['<%= name %>'] = "<%= ldap['username'] %>";
+$edgLDAPPass['<%= name %>'] = "<%= ldap['password'] %>";
 <% end %>
 
 $wgShowSQLErrors= <%= scope.lookupvar('::mediawiki_externaldata_sql_showerrors') %>;
-# fast kein cache zum developen
 $edgCacheExpireTime = <%= scope.lookupvar('::mediawiki_externaldata_cache_expiry') %>;
 <% scope.lookupvar('::mediawiki_externaldata_sql_servers').each do |name,sql| %>
-$edgDBServer['<%= name %>'] = "<%= sql.host %>";
-$edgDBServerType['<%= name %>'] = "<%= sql.type %>";
-$edgDBName['<%= name %>'] = "<%= sql.schema %>";
-$edgDBUser['<%= name %>'] = "<%= sql.username %>";
-$edgDBPass['<%= name %>'] = "<%= sql.password %>";
+$edgDBServer['<%= name %>'] = "<%= sql['host'] %>";
+$edgDBServerType['<%= name %>'] = "<%= sql['type'] %>";
+$edgDBName['<%= name %>'] = "<%= sql['schema'] %>";
+$edgDBUser['<%= name %>'] = "<%= sql['username'] %>";
+$edgDBPass['<%= name %>'] = "<%= sql['password'] %>";
 <% end %>
+
 <% end %>
