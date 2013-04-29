@@ -288,6 +288,10 @@ include_once( "$IP/extensions/HeaderTabs/HeaderTabs.php" );
 $htEditTabLink = false;
 <% end %>
 
+<% if scope.lookupvar('::mediawiki_syntaxhiglight_geshi') %>
+require_once("$IP/extensions/SyntaxHighlight_GeSHi/SyntaxHighlight_GeSHi.php");
+<% end %>
+
 <% if scope.lookupvar('::mediawiki_semantic') %>
 require_once( "$IP/extensions/SemanticBundle/SemanticBundle.php" );
 
