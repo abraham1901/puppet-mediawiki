@@ -292,6 +292,14 @@ $htEditTabLink = false;
 require_once("$IP/extensions/SyntaxHighlight_GeSHi/SyntaxHighlight_GeSHi.php");
 <% end %>
 
+<% if scope.lookupvar('::mediawiki_scribunto') %>
+require_once( "$IP/extensions/Scribunto/Scribunto.php" );
+$wgScribuntoDefaultEngine = 'luastandalone';
+<% if scope.lookupvar('::mediawiki_syntaxhiglight_geshi') %>
+$wgScribuntoUseGeSHi = true;
+<% end %>
+<% end %>
+
 <% if scope.lookupvar('::mediawiki_semantic') %>
 require_once( "$IP/extensions/SemanticBundle/SemanticBundle.php" );
 
